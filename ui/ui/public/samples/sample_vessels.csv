@@ -1,0 +1,4 @@
+id,name,eta,draft,cargo_type,capacity,status,demurrage_rate
+V_TIMESTAMP_1,MV Ocean Giant,2025-12-08T22:38:54.388749,14.2,Coal,75000,en_route,1200
+V_TIMESTAMP_2,MV Iron Lady,2025-12-08T14:38:54.388749,11.5,IronOre,45000,en_route,900
+V_TIMESTAMP_3,MV Pacific Star,2025-12-10T10:38:54.388749,13.8,Coal,60000,en_route,1100

@@ -1,0 +1,5 @@
+id,scheduled_arrival,current_location,capacity
+R001,2023-10-27T10:00:00,Yard_A,3000
+R002,2023-10-27T11:00:00,Transit_B,3000
+R003,2023-10-27T14:00:00,Yard_C,3000
+R004,2023-10-28T09:00:00,Depot_X,3000

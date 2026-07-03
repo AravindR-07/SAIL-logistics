@@ -1,0 +1,65 @@
+
+# Runbook: Verification of SAIL Digital Twin
+
+Follow these steps to verify the system works as expected.
+
+## Scenario 1: Basic Health Check
+1. Start the server: `python -m backend.app`
+2. Open terminal and run: `curl http://localhost:8000/health`
+3. EXPECTED: `{"status": "ok", ...}`
+
+## Scenario 2: Optimization
+1. Trigger the optimization endpoint manually.
+   ```bash
+   curl.exe -X POST http://localhost:8000/api/optimize -H "X-API-KEY: dev-api-key-123"
+   ```
+2. EXPECTED: JSON response with `status: OPTIMAL` (or FEASIBLE) and a schedule of `vessel_berth` assignments.
+
+## Scenario 3: Self-Healing (Vessel Delay)
+1. Simulate a delay event.
+   ```bash
+   curl.exe -X POST http://localhost:8000/api/event \
+     -H "Content-Type: application/json" \
+     -H "X-API-KEY: dev-api-key-123" \
+     -d "{\"event_type\": \"vessel_delay\", \"target_id\": \"V001\", \"payload\": {\"hours\": 10}}"
+   ```
+2. EXPECTED: Response includes `impact_analysis` (showing cost increase) and `proposed_actions`.
+
+## Scenario 4: Full Stack Integration Check
+1. Ensure Backend is running: `python -m backend.app` (Port 8000)
+2. Ensure Frontend is running: `npm run dev` (Port 5173 usually)
+3. Open http://localhost:5173 in your browser.
+4. Dashboard Verification:
+   - Check "Total Cost" card: Should be a formatted number (e.g., "$12,345") not "$45k".
+   - Check "Total Vessels": Should match the number of vessels in the backend state.
+   - Watch for updates: Events triggered via curl (Scenario 3) should update these numbers within 30 seconds.
+5. Network Check:
+   - Open Browser Developer Tools (F12) -> Network Tab.
+   - Filter by "Fetch/XHR".
+   - Confirm requests to `http://localhost:8000/api/state` return 200 OK.
+
+## Interactive Demo Commands (Copy-Paste these!)
+
+**1. Create Critical Delay (Visual: Cost Spikes, Risk Score UP)**
+```powershell
+curl.exe -X POST http://localhost:8000/api/event `
+  -H "Content-Type: application/json" `
+  -H "X-API-KEY: dev-api-key-123" `
+  -d '{\"event_type\": \"vessel_delay\", \"target_id\": \"V001\", \"apply\": true, \"payload\": {\"hours\": 24}}'
+```
+
+**2. Reset Dashboard (Visual: Clears all alerts)**
+```powershell
+curl.exe -X POST http://localhost:8000/api/event `
+  -H "Content-Type: application/json" `
+  -H "X-API-KEY: dev-api-key-123" `
+  -d '{\"event_type\": \"reset\"}'
+```
+
+**3. Minor Delay (Visual: Small Cost, No Risk Alert)**
+```powershell
+curl.exe -X POST http://localhost:8000/api/event `
+  -H "Content-Type: application/json" `
+  -H "X-API-KEY: dev-api-key-123" `
+  -d '{\"event_type\": \"vessel_delay\", \"target_id\": \"V001\", \"apply\": true, \"payload\": {\"hours\": 0.5}}'
+```

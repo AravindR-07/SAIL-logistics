@@ -1,0 +1,5 @@
+id,name,eta,draft,cargo_type,capacity
+V001,MV Alpha,2023-10-27T08:00:00,14.5,Coal,50000
+V002,MV Beta,2023-10-27T12:00:00,12.0,IronOre,40000
+V003,MV Gamma,2023-10-28T06:00:00,13.5,Coal,45000
+V004,MV Delta,2023-10-28T18:00:00,11.0,Flux,30000
